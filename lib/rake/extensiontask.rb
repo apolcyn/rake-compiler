@@ -258,6 +258,13 @@ Java extension should be preferred.
           sorted_ruby_versions = ruby_versions.sort_by do |ruby_version|
             ruby_version.split(".").collect(&:to_i)
           end
+	  a = sorted_ruby_versions.first
+	  b = sorted_ruby_versions.last
+	  p "In define_native_tasks. ABOUT TO CHECK RUBY API VERSION: first and last is |#{a}| and |#{b}|"
+	  p "In define_native_tasks. WE are Defining native tasks for_platform: #{for_platform}"
+	  p "In define_native_tasks. WE are Defining native tasks platf: #{platf}"
+	  p "In define_native_tasks. WE are Defining native tasks spec.platform: #{spec.platform}"
+	  p "In define_native_tasks. current backtrace is #{Thread.current.backtrace}"
           spec.required_ruby_version = [
             ">= #{ruby_api_version(sorted_ruby_versions.first)}",
             "< #{ruby_api_version(sorted_ruby_versions.last).succ}"
@@ -346,6 +353,11 @@ Java extension should be preferred.
 
       multi = (ruby_vers.size > 1) ? true : false
 
+      p "in define_cross_platform_tasks. ruby_vers is #{ruby_vers}"
+      p "in define_cross_platform_tasks. ENV RUBY_CC_VERSION is #{ENV['RUBY_CC_VERSION']}"
+      p "in define_cross_platform_tasks. RUBY_VERSION is #{RUBY_VERSION}"
+      p "in define_cross_platform_tasks. for_platform is #{for_platform}"
+      p "in define_cross_platform_tasks. stacktrace is #{Thread.current.backtrace}"
       ruby_vers.each do |version|
         # save original lib_dir
         orig_lib_dir = @lib_dir
@@ -357,6 +369,8 @@ Java extension should be preferred.
         end
 
         # Update cross compiled platform/version combinations
+        p "in define_cross_platform_tasks. RUBY_VERSION is #{version}"
+        p "in define_cross_platform_tasks. adding #{version} to platform: #{for_platform}"
         ruby_versions = (@ruby_versions_per_platform[for_platform] ||= [])
         ruby_versions << version
 
