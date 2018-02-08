@@ -22,6 +22,7 @@ module Rake
     attr_accessor :config_options
     attr_accessor :source_pattern
     attr_accessor :extra_options
+    attr_accessor :only_cross_compile
     attr_writer :platform
 
     def platform
@@ -42,13 +43,14 @@ module Rake
       @lib_dir = 'lib'
       @config_options = []
       @extra_options = ARGV.select { |i| i =~ /\A--?/ }
+      @only_cross_compile = false
     end
 
     def define
       fail "Extension name must be provided." if @name.nil?
       @name = @name.to_s
 
-      define_compile_tasks
+      define_compile_tasks unless @only_cross_compile
     end
 
     private
